@@ -13,7 +13,7 @@ module.exports = {
         'chore',
         'style',
         'refactor',
-           'ci',
+        'ci',
         'test',
         'revert',
         'perf',
