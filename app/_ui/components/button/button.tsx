@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { ButtonProps } from './button.type'
 import { BASE_BUTTON, ButtonVariants } from './button.variants'
-import { Spinner } from '../spinner/spinner'
+import { Spinner } from '../spinner'
 
 export const Button: React.FC<ButtonProps> = ({
   children,

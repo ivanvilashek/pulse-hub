@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconProps } from './icon.type'
 
 export const Icon: React.FC<IconProps> = ({ icon: IconComponent, ...rest }) => {

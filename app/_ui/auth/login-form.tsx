@@ -1,6 +1,6 @@
 import React from 'react'
-import { Input } from '../components/input'
-import { Button } from '../components/button'
+import { Input } from '@app/ui/components/input'
+import { Button } from '@app/ui/components/button'
 
 export const LoginForm = () => {
   return (
