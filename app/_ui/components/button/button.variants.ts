@@ -12,9 +12,9 @@ hover:text-purple-7 hover:ring-purple-7 active:bg-gray-2/20 active:text-purple-8
 const TERTIARY_BUTTON = tw`bg-transparent text-primary hover:bg-gray-1/10 hover:text-purple-7
  active:bg-gray-2/20 active:text-purple-8 aria-disabled:bg-gray-2/30`
 
-const PRIMARY_BUTTON_LOADER = tw`border-gray-1 border-b-transparent`
-const SECONDARY_BUTTON_LOADER = tw`border-slate-900/50`
-const TERTIARY_BUTTON_LOADER = tw`border-blue-500`
+const PRIMARY_BUTTON_LOADER = tw`!border-gray-2 !border-b-transparent`
+const SECONDARY_BUTTON_LOADER = tw`!border-slate-900/50`
+const TERTIARY_BUTTON_LOADER = tw`!border-blue-500`
 
 export const ButtonVariants = {
   primary: {

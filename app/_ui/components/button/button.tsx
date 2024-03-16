@@ -17,7 +17,10 @@ export const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  const loaderClasses = clsx('absolute h-4 w-4', ButtonVariants[variant].loader)
+  const loaderClasses = clsx(
+    'absolute !h-4 !w-4',
+    ButtonVariants[variant].loader
+  )
 
   return (
     <button
