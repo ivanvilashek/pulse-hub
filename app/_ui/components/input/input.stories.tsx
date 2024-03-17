@@ -8,9 +8,18 @@ const meta: Meta<typeof Input> = {
     label: {
       type: 'string',
     },
+    placeholder: {
+      type: 'string',
+    },
     type: {
-      description: 'The type of input, see: MDN',
+      description: 'The type of input',
       defaultValue: 'text',
+    },
+    isDisabled: {
+      type: 'boolean',
+    },
+    isInvalid: {
+      type: 'boolean',
     },
   },
 }
@@ -19,6 +28,9 @@ export default meta
 type Story = StoryObj<typeof Input>
 
 export const Base: Story = {
+  args: {
+    id: 'text',
+  },
   render: (args) => (
     <div className="max-w-xs">
       <Input {...args} />
