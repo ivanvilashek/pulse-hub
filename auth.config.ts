@@ -24,6 +24,21 @@ export const authConfig = {
 
       return true
     },
+
+    jwt({ user, token }) {
+      if (user) {
+        token.firstName = user.firstName
+        token.lastName = user.lastName
+      }
+      return token
+    },
+
+    session({ session, token }) {
+      session.user.firstName = token.firstName
+      session.user.lastName = token.lastName
+
+      return session
+    },
   },
   providers: [],
 } satisfies NextAuthConfig
