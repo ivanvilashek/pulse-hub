@@ -11,27 +11,53 @@ export const SignUpForm = () => {
   const initialState: AuthState = { message: null, errors: {} }
 
   const [state, dispatch] = useFormState(register, initialState)
-  console.log('Sign up form', state)
+
   return (
     <form action={dispatch}>
       <div className="flex flex-1 flex-col gap-y-4 rounded-2xl bg-white p-10">
         <div>
-          <Input
-            label="Name"
-            id="name"
-            name="name"
-            type="name"
-            placeholder="Enter your name"
-            required
-            aria-describedby="name-error"
-          />
-          <div id="name-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.name &&
-              state.errors.name.map((error: string) => (
-                <p className="mt-2 text-sm text-red-7" key={error}>
-                  {error}
-                </p>
-              ))}
+          <div className="flex space-x-4">
+            <Input
+              label="First Name"
+              id="firstName"
+              name="firstName"
+              type="firstName"
+              placeholder="Enter your first name"
+              required
+              aria-describedby="first-name-error"
+              minLength={3}
+            />
+
+            <Input
+              label="Last Name"
+              id="lastName"
+              name="lastName"
+              type="lastName"
+              placeholder="Enter your last name"
+              required
+              aria-describedby="last-name-error"
+              minLength={3}
+            />
+          </div>
+
+          <div className="mt-2">
+            <div id="last-name-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.lastName &&
+                state.errors.lastName.map((error: string) => (
+                  <p className="text-sm text-red-7" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+
+            <div id="first-name-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.firstName &&
+                state.errors.firstName.map((error: string) => (
+                  <p className="text-sm text-red-7" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
         </div>
 
@@ -74,6 +100,7 @@ export const SignUpForm = () => {
               ))}
           </div>
         </div>
+
         <div className="flex flex-col space-y-2">
           <SubmitButton />
           {state.message && (
