@@ -1,18 +1,27 @@
 'use server'
 
-import { getUser, signIn } from '@/auth'
-import { sql } from '@vercel/postgres'
+import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
 import { isRedirectError } from 'next/dist/client/components/redirect'
+import prisma from '../prisma'
+import { Routes } from '../constants'
+import { User } from '@prisma/client'
 
 const FormSchema = z.object({
   id: z.string(),
-  name: z
+  firstName: z
     .string({ invalid_type_error: 'Please enter a name.' })
-    .min(3, 'Name must contain at least 3 characters'),
+    .min(3, 'First name must contain at least 3 characters')
+    .regex(/^[a-zA-Z]+$/i, "First name shoudn't contain special chars"),
+
+  lastName: z
+    .string({ invalid_type_error: 'Please enter a name.' })
+    .min(3, 'Last name must contain at least 3 characters')
+    .regex(/^[A-Za-z]+$/i, "Last name shoudn't contain special chars"),
+
   email: z.string({}).email('Please enter a valid email.'),
   password: z
     .string({ invalid_type_error: 'Please enter a password' })
@@ -23,11 +32,25 @@ const SignUp = FormSchema.omit({ id: true })
 
 export type AuthState = {
   errors?: {
-    name?: string[]
+    firstName?: string[]
+    lastName?: string[]
     email?: string[]
     password?: string[]
   }
   message?: string | null
+}
+
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  try {
+    const data = await prisma.$queryRawUnsafe<User[]>(
+      'SELECT * FROM "User" WHERE email = $1',
+      email
+    )
+    return data[0]
+  } catch (error) {
+    console.error('Failed to fetch user:', error)
+    throw new Error('Failed to fetch user.')
+  }
 }
 
 export const authenticate = async (
@@ -60,12 +83,13 @@ export const authenticate = async (
 
     throw error
   }
-  redirect('/home')
+  redirect(Routes.FEED)
 }
 
 export const register = async (prevState: AuthState, formData: FormData) => {
   const validatedFields = SignUp.safeParse({
-    name: formData.get('name'),
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
     email: formData.get('email'),
     password: formData.get('password'),
   })
@@ -78,9 +102,9 @@ export const register = async (prevState: AuthState, formData: FormData) => {
   }
 
   try {
-    const { name, email, password } = validatedFields.data
+    const { firstName, lastName, email, password } = validatedFields.data
 
-    const user = await getUser(email)
+    const user = await getUserByEmail(email)
 
     if (user) {
       throw new Error('User already exist')
@@ -88,10 +112,14 @@ export const register = async (prevState: AuthState, formData: FormData) => {
 
     const hashedPassword = await bcrypt.hash(password, 12)
 
-    await sql`
-        INSERT INTO users (name, email, password)
-        VALUES (${name}, ${email}, ${hashedPassword})
-    `
+    await prisma.$executeRawUnsafe(
+      'INSERT INTO "User" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4)',
+      firstName,
+      lastName,
+      email,
+      hashedPassword
+    )
+
     await signIn('credentials', {
       email,
       password,
@@ -106,5 +134,5 @@ export const register = async (prevState: AuthState, formData: FormData) => {
       return { message: error.message }
     }
   }
-  redirect('/home')
+  redirect(Routes.FEED)
 }
