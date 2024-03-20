@@ -3,7 +3,7 @@ import { BiPulse } from 'react-icons/bi'
 
 const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <main className="flex h-screen items-start justify-center p-4 pt-16">
+    <main className="flex min-h-screen items-start justify-center overflow-scroll p-4 py-12">
       <div className="flex w-full max-w-md flex-col gap-y-8">
         <div className="flex items-center justify-center space-x-2">
           <BiPulse className="h-14 w-14 fill-primary" />

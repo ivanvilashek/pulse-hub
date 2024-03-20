@@ -18,7 +18,10 @@ const Page = () => {
         <LoginForm />
         <p className="text-center text-sm font-semibold text-gray-9">
           <span>Not a member?</span>
-          <Link href={Routes.SIGN_UP} className="ml-1 text-primary">
+          <Link
+            href={Routes.SIGN_UP}
+            className="ml-1 cursor-pointer text-primary"
+          >
             Create new account
           </Link>
         </p>
