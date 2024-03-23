@@ -4,6 +4,7 @@ export type UserProfile = Partial<
   Omit<User, 'password'> &
     Omit<Profile, 'createdAt' | 'updatedAt' | 'userId'> & {
       isFollowed: boolean | null
+      isFollowing: boolean | null
       isOwner: boolean | null
       followersCount: number
       followingCount: number

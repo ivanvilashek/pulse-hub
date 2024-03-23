@@ -3,7 +3,7 @@
 import React, { useMemo, useRef } from 'react'
 import { AvatarFallbackProps } from './avatar.type'
 import { FaCircleUser } from 'react-icons/fa6'
-import { getInitials, getRandomColor } from '@app/lib/utils'
+import { getInitials } from '@app/lib/utils'
 import { useDimensions } from '@app/lib/hooks/use-dimensions'
 
 export const AvatarFallback: React.FC<AvatarFallbackProps> = ({
@@ -14,7 +14,6 @@ export const AvatarFallback: React.FC<AvatarFallbackProps> = ({
   const { width } = useDimensions(ref)
 
   const fontSize = useMemo(() => Math.floor(width / 2.5), [width])
-  const backgroundColor = useMemo(() => getRandomColor(), [])
 
   if (!showFallback) return null
 
@@ -23,9 +22,6 @@ export const AvatarFallback: React.FC<AvatarFallbackProps> = ({
       <div
         ref={ref}
         className={`flex h-full w-full items-center justify-center`}
-        style={{
-          backgroundColor,
-        }}
       >
         <span
           className="select-none text-base font-bold text-white"

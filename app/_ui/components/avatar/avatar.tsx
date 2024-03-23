@@ -21,7 +21,7 @@ export const Avatar: React.FC<AvatarProps> = ({ src, className, ...rest }) => {
   return (
     <div
       className={clsx(
-        'inline-block overflow-hidden rounded-full ring-2 ring-white',
+        'relative inline-block overflow-hidden rounded-full bg-gradient-to-r from-[#ff80b5] to-primary ring-2 ring-white',
         className
       )}
     >

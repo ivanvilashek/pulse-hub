@@ -14,10 +14,10 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
     <Image
       alt={name || 'avatar'}
       className="object-cover"
-      fill
       src={src}
       {...rest}
       priority
+      fill
     />
   )
 }
