@@ -9,10 +9,46 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(dbgenerated("gen_random_uuid()"))
-  password  String
-  email     String  @unique
-  firstName String
-  lastName  String
-  image     String?
+  id         String    @id @default(dbgenerated("gen_random_uuid()"))
+  email      String    @unique
+  image      String?
+  profile    Profile?
+  password   String
+  lastName   String
+  username   String    @unique
+  firstName  String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  following  Follows[] @relation("following")
+  followedBy Follows[] @relation("followedBy")
+}
+
+model Profile {
+  id           String       @id @default(dbgenerated("gen_random_uuid()"))
+  bio          String?
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId       String       @unique
+  website      String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+  isVerified   Boolean?
+  preferences  Preferences?
+  profileImage String?
+}
+
+model Follows {
+  createdAt    DateTime @default(now())
+  following    User     @relation("following", fields: [followingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  followedBy   User     @relation("followedBy", fields: [followedById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  followingId  String
+  followedById String
+
+  @@id([followingId, followedById])
+}
+
+model Preferences {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  profileId String   @unique
+  isPrivate Boolean?
 }
