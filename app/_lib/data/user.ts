@@ -49,11 +49,12 @@ export const getProfile = async (username: string) => {
 
     if (!session) return
 
-    const activeUserName = session.user?.username
+    const { userId } = session
 
     const data = await prisma.$queryRawUnsafe<UserProfile[]>(
       `
         SELECT 
+          u.id,
           u.image,
           u.username,
           u."lastName",
@@ -65,12 +66,18 @@ export const getProfile = async (username: string) => {
           p."isVerified",
           p."profileImage",
           CASE 
-            WHEN u.username <> '${activeUserName}' THEN f."followingId" IS NOT NULL 
+            WHEN u.id <> '${userId}' THEN f."followingId" IS NOT NULL 
           END AS "isFollowed",
+
           CASE 
-            WHEN u.username = '${activeUserName}' THEN true
+            WHEN u.id <> '${userId}' THEN fu."followingId" IS NOT NULL 
+          END AS "isFollowing",
+
+          CASE 
+            WHEN u.id = '${userId}' THEN true
           ELSE false
           END AS "isOwner",
+
           (SELECT COUNT(*) FROM "Follows" WHERE "followedById" = u.id) AS "followersCount",
           (SELECT COUNT(*) FROM "Follows" WHERE "followingId" = u.id) AS "followingCount"
         FROM "User" u 
@@ -79,9 +86,14 @@ export const getProfile = async (username: string) => {
           ON p."userId" = u.id
 
         LEFT JOIN "Follows" f 
-          ON u.username <> '${activeUserName}' 
+          ON u.id <> '${userId}' 
           AND f."followingId" = u.id
-          AND f."followedById" = (SELECT id FROM "User" WHERE username = '${activeUserName}')
+          AND f."followedById" = '${userId}'
+
+        LEFT JOIN "Follows" fu 
+          ON u.id <> '${userId}' 
+          AND fu."followedById" = u.id
+          AND fu."followingId" =  '${userId}'
 
         WHERE u.username = '${username}';
       `

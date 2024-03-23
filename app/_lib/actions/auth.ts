@@ -56,6 +56,8 @@ export const authenticate = async (
     }
 
     if (error instanceof AuthError) {
+      console.error(error)
+
       switch (error.type) {
         case 'CredentialsSignin':
           return 'Invalid credentials.'
@@ -116,6 +118,8 @@ export const register = async (prevState: AuthState, formData: FormData) => {
       redirect: false,
     })
   } catch (error) {
+    console.error(error)
+
     if (isRedirectError(error)) {
       throw error
     }
