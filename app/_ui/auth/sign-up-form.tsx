@@ -40,25 +40,30 @@ export const SignUpForm = () => {
             />
           </div>
 
-          <div className="mt-2">
-            <div id="last-name-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.lastName &&
-                state.errors.lastName.map((error: string) => (
-                  <p className="text-sm text-red-7" key={error}>
-                    {error}
-                  </p>
-                ))}
-            </div>
+          {state.errors?.firstName ||
+            (state.errors?.lastName && (
+              <div className="mt-2">
+                <div id="last-name-error" aria-live="polite" aria-atomic="true">
+                  {state.errors.lastName?.map((error: string) => (
+                    <p className="text-sm text-red-7" key={error}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
 
-            <div id="first-name-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.firstName &&
-                state.errors.firstName.map((error: string) => (
-                  <p className="text-sm text-red-7" key={error}>
-                    {error}
-                  </p>
-                ))}
-            </div>
-          </div>
+                <div
+                  id="first-name-error"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
+                  {state.errors.firstName?.map((error: string) => (
+                    <p className="text-sm text-red-7" key={error}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
         </div>
 
         <div>
