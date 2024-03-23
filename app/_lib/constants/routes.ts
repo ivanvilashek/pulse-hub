@@ -3,7 +3,7 @@ export const Routes = {
   SIGN_UP: '/signup',
   SIGN_IN: '/login',
   FEED: '/feed',
-  PROFILE: '/profile',
+  PROFILE: '/profile/',
 }
 
 export const privateRoutes = [Routes.PROFILE, Routes.FEED]
