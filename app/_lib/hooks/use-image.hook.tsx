@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react'
 type NativeImageProps = React.ImgHTMLAttributes<HTMLImageElement>
 
 export type UseImageProps = {
-  src?: string
+  src?: string | null
   onLoad?: NativeImageProps['onLoad']
   onError?: NativeImageProps['onError']
 }
