@@ -1,15 +1,15 @@
 import Header from '@app/ui/header'
 import { PropsWithChildren } from 'react'
 
-const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
+const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Header />
-      <main className="flex h-screen items-start justify-center p-4 pt-16">
+      <main className="flex h-screen px-4 py-20 md:px-16 md:py-24">
         {children}
       </main>
     </>
   )
 }
 
-export default RootLayout
+export default Layout
