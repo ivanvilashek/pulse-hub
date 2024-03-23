@@ -1,7 +1,9 @@
-import { User } from '@prisma/client'
+import { User } from 'next-auth'
 
-export const getFullname = (user: User) => {
-  if (!user) return
-  const { firstName, lastName } = user
+export const getFullname = (
+  data: Partial<Pick<User, 'firstName' | 'lastName'>>
+) => {
+  if (!data) return
+  const { firstName, lastName } = data
   return [firstName, lastName].join(' ')
 }
