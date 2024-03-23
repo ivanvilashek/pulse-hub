@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 import { isRedirectError } from 'next/dist/client/components/redirect'
 import prisma from '../prisma'
 import { Routes } from '../constants'
-import { User } from '@prisma/client'
+import { getUserByEmail, getUserName } from '../data'
 
 const FormSchema = z.object({
   id: z.string(),
@@ -38,19 +38,6 @@ export type AuthState = {
     password?: string[]
   }
   message?: string | null
-}
-
-export async function getUserByEmail(email: string): Promise<User | undefined> {
-  try {
-    const data = await prisma.$queryRawUnsafe<User[]>(
-      'SELECT * FROM "User" WHERE email = $1',
-      email
-    )
-    return data[0]
-  } catch (error) {
-    console.error('Failed to fetch user:', error)
-    throw new Error('Failed to fetch user.')
-  }
 }
 
 export const authenticate = async (
@@ -112,12 +99,15 @@ export const register = async (prevState: AuthState, formData: FormData) => {
 
     const hashedPassword = await bcrypt.hash(password, 12)
 
+    const username = await getUserName()
+
     await prisma.$executeRawUnsafe(
-      'INSERT INTO "User" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4)',
+      `INSERT INTO "User" ("firstName", "lastName", "email", "password", "username") VALUES ($1, $2, $3, $4, $5)`,
       firstName,
       lastName,
       email,
-      hashedPassword
+      hashedPassword,
+      username
     )
 
     await signIn('credentials', {
