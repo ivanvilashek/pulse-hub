@@ -16,6 +16,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   followersCount,
   followingCount,
   profileImage,
+  isFollowing,
   isVerified,
   isFollowed,
   createdAt,
@@ -51,7 +52,12 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             />
 
             <div className="py-4">
-              {!isOwner && <FollowButton isFollowed={isFollowed} />}
+              {!isOwner && (
+                <FollowButton
+                  isFollowed={isFollowed}
+                  isFollowing={isFollowing}
+                />
+              )}
             </div>
           </div>
 
