@@ -1,28 +1,37 @@
-import React from 'react'
+'use client'
+
+import React, { useMemo, useRef } from 'react'
 import { AvatarFallbackProps } from './avatar.type'
 import { FaCircleUser } from 'react-icons/fa6'
 import { getInitials, getRandomColor } from '@app/lib/utils'
+import { useDimensions } from '@app/lib/hooks/use-dimensions'
 
 export const AvatarFallback: React.FC<AvatarFallbackProps> = ({
-  size,
   name,
   showFallback,
 }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const { width } = useDimensions(ref)
+
+  const fontSize = useMemo(() => Math.floor(width / 2.5), [width])
+  const backgroundColor = useMemo(() => getRandomColor(), [])
+
   if (!showFallback) return null
 
   if (name) {
     return (
       <div
-        className={`flex items-center justify-center`}
+        ref={ref}
+        className={`flex h-full w-full items-center justify-center`}
         style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          backgroundColor: getRandomColor(),
+          backgroundColor,
         }}
       >
         <span
-          className="select-none font-bold text-white"
-          style={{ fontSize: Math.floor(size / 2.5) }}
+          className="select-none text-base font-bold text-white"
+          style={{
+            fontSize,
+          }}
         >
           {getInitials(name)}
         </span>
@@ -30,10 +39,5 @@ export const AvatarFallback: React.FC<AvatarFallbackProps> = ({
     )
   }
 
-  return (
-    <FaCircleUser
-      className="bg-white fill-gray-5"
-      style={{ width: `${size}px`, height: `${size}px` }}
-    />
-  )
+  return <FaCircleUser className="h-full w-full bg-white fill-gray-5" />
 }

@@ -3,7 +3,6 @@ import React from 'react'
 import { AvatarImageProps } from './avatar.type'
 
 export const AvatarImage: React.FC<AvatarImageProps> = ({
-  size,
   name,
   src,
   showFallback,
@@ -14,8 +13,8 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
   return (
     <Image
       alt={name || 'avatar'}
-      width={size}
-      height={size}
+      className="object-cover"
+      fill
       src={src}
       {...rest}
       priority
