@@ -3,9 +3,9 @@ import { authConfig } from './auth.config'
 import Credentials from 'next-auth/providers/credentials'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
-import { getUserByEmail } from '@app/lib/actions/auth'
+import { getUserByEmail } from '@app/lib/data'
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({

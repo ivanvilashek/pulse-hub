@@ -29,6 +29,7 @@ export const authConfig = {
       if (user) {
         token.firstName = user.firstName
         token.lastName = user.lastName
+        token.username = user.username
       }
       return token
     },
@@ -36,6 +37,8 @@ export const authConfig = {
     session({ session, token }) {
       session.user.firstName = token.firstName
       session.user.lastName = token.lastName
+      session.user.username = token.username
+      session.userId = token.sub
 
       return session
     },
